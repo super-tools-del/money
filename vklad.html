@@ -1,0 +1,88 @@
+html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продвинутый Калькулятор Вкладов</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #333; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; color: #5f6368; }
+        input[type="number"], input[type="range"] { width: 100%; box-sizing: border-box; }
+        input[type="number"] { padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s; }
+        input[type="number"]:focus { border-color: #3498db; }
+        .result-card { background: #3498db; color: white; padding: 20px; border-radius: 15px; text-align: center; margin-top: 25px; }
+        .result-val { font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
+        .details { margin-top: 20px; font-size: 14px; border-top: 1px dashed #ddd; padding-top: 15px; }
+        .details div { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .profit-text { color: #2ecc71; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>💰 Мои Накопления</h2>
+    
+    <div class="input-group">
+        <label>Сумма вклада (₽)</label>
+        <input type="number" id="sum" value="100000" oninput="calculate()">
+    </div>
+
+    <div class="input-group">
+        <label>Срок вклада (месяцев)</label>
+        <input type="number" id="months" value="12" oninput="calculate()">
+    </div>
+
+    <div class="input-group">
+        <label>Процентная ставка (% годовых)</label>
+        <input type="number" id="percent" value="16" oninput="calculate()">
+    </div>
+
+    <div class="result-card">
+        <span>Итоговая сумма через <span id="res-mo">12</span> мес.</span>
+        <span class="result-val" id="total">0 ₽</span>
+    </div>
+
+    <div class="details">
+        <div>
+            <span>Ваши вложения:</span>
+            <span id="orig-sum">100 000 ₽</span>
+        </div>
+        <div>
+            <span>Чистая прибыль:</span>
+            <span class="profit-text" id="profit">+ 0 ₽</span>
+        </div>
+        <div>
+            <span>В среднем в месяц:</span>
+            <span id="monthly-profit">0 ₽</span>
+        </div>
+    </div>
+</div>
+
+<script>
+function calculate() {
+    let s = parseFloat(document.getElementById('sum').value) || 0;
+    let m = parseInt(document.getElementById('months').value) || 0;
+    let p = (parseFloat(document.getElementById('percent').value) || 0) / 100 / 12;
+
+    // Считаем сложный процент (капитализация каждый месяц)
+    let total = s * Math.pow((1 + p), m);
+    let profit = total - s;
+    let monthly = profit / m;
+
+    document.getElementById('res-mo').innerText = m;
+    document.getElementById('orig-sum').innerText = s.toLocaleString('ru-RU') + ' ₽';
+    document.getElementById('total').innerText = total.toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
+    document.getElementById('profit').innerText = '+ ' + profit.toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
+    document.getElementById('monthly-profit').innerText = (monthly || 0).toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
+}
+
+// Запускаем расчет сразу при загрузке
+calculate();
+</script>
+
+</body>
+</html>
