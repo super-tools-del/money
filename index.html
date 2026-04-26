@@ -4,85 +4,59 @@ html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Продвинутый Калькулятор Вкладов</title>
+    <title>Калькулятор дохода по вкладу</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #333; padding: 20px; }
-        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; color: #5f6368; }
-        input[type="number"], input[type="range"] { width: 100%; box-sizing: border-box; }
-        input[type="number"] { padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s; }
-        input[type="number"]:focus { border-color: #3498db; }
-        .result-card { background: #3498db; color: white; padding: 20px; border-radius: 15px; text-align: center; margin-top: 25px; }
-        .result-val { font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
-        .details { margin-top: 20px; font-size: 14px; border-top: 1px dashed #ddd; padding-top: 15px; }
-        .details div { display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .profit-text { color: #2ecc71; font-weight: bold; }
+        body { font-family: sans-serif; background: #f0f4f8; padding: 20px; color: #333; }
+        .box { max-width: 400px; margin: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 15px; background: #28a745; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        #res { margin-top: 25px; padding: 15px; background: #e9f7ef; border-radius: 8px; display: none; text-align: center; }
+        .res-val { font-size: 24px; font-weight: bold; color: #28a745; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>💰 Мои Накопления</h2>
-    
-    <div class="input-group">
-        <label>Сумма вклада (₽)</label>
-        <input type="number" id="sum" value="100000" oninput="calculate()">
-    </div>
-
-    <div class="input-group">
-        <label>Срок вклада (месяцев)</label>
-        <input type="number" id="months" value="12" oninput="calculate()">
-    </div>
-
-    <div class="input-group">
-        <label>Процентная ставка (% годовых)</label>
-        <input type="number" id="percent" value="16" oninput="calculate()">
-    </div>
-
-    <div class="result-card">
-        <span>Итоговая сумма через <span id="res-mo">12</span> мес.</span>
-        <span class="result-val" id="total">0 ₽</span>
-    </div>
-
-    <div class="details">
-        <div>
-            <span>Ваши вложения:</span>
-            <span id="orig-sum">100 000 ₽</span>
-        </div>
-        <div>
-            <span>Чистая прибыль:</span>
-            <span class="profit-text" id="profit">+ 0 ₽</span>
-        </div>
-        <div>
-            <span>В среднем в месяц:</span>
-            <span id="monthly-profit">0 ₽</span>
-        </div>
+<div class="box">
+    <h2>💰 Калькулятор вклада</h2>
+    <label>Сумма вклада (₽)</label>
+    <input type="number" id="sum" value="100000">
+    <label>Срок (мес.)</label>
+    <input type="number" id="months" value="12">
+    <label>Ставка (% годовых)</label>
+    <input type="number" id="percent" value="16">
+    <button onclick="calculate()">ПОСЧИТАТЬ ДОХОД</button>
+    <div id="result">
+        <div>Через <span id="res-mo"></span> мес. у вас будет:</div>
+        <div class="res-val" id="total">0</div>
     </div>
 </div>
 
 <script>
 function calculate() {
-    let s = parseFloat(document.getElementById('sum').value) || 0;
-    let m = parseInt(document.getElementById('months').value) || 0;
-    let p = (parseFloat(document.getElementById('percent').value) || 0) / 100 / 12;
-
-    // Считаем сложный процент (капитализация каждый месяц)
+    let s = parseFloat(document.getElementById('sum').value);
+    let m = parseInt(document.getElementById('months').value);
+    let p = parseFloat(document.getElementById('percent').value) / 100 / 12;
     let total = s * Math.pow((1 + p), m);
-    let profit = total - s;
-    let monthly = profit / m;
-
     document.getElementById('res-mo').innerText = m;
-    document.getElementById('orig-sum').innerText = s.toLocaleString('ru-RU') + ' ₽';
     document.getElementById('total').innerText = total.toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
-    document.getElementById('profit').innerText = '+ ' + profit.toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
-    document.getElementById('monthly-profit').innerText = (monthly || 0).toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
+    document.getElementById('result').style.display = 'block';
 }
-
-// Запускаем расчет сразу при загрузке
-calculate();
 </script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108766696', 'ym');
+    ym(108766696, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/108766696" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 
 </body>
 </html>
