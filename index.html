@@ -3,60 +3,27 @@ html
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор дохода по вкладу</title>
+    <title>Калькулятор дохода</title>
     <style>
-        body { font-family: sans-serif; background: #f0f4f8; padding: 20px; color: #333; }
+        body { font-family: sans-serif; background: #f0f4f8; padding: 20px; text-align: center; }
         .box { max-width: 400px; margin: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; padding: 15px; background: #28a745; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        #res { margin-top: 25px; padding: 15px; background: #e9f7ef; border-radius: 8px; display: none; text-align: center; }
-        .res-val { font-size: 24px; font-weight: bold; color: #28a745; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #28a745; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .link { display: block; margin-top: 20px; color: #007bff; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
-
 <div class="box">
     <h2>💰 Калькулятор вклада</h2>
-    <label>Сумма вклада (₽)</label>
-    <input type="number" id="sum" value="100000">
-    <label>Срок (мес.)</label>
-    <input type="number" id="months" value="12">
-    <label>Ставка (% годовых)</label>
-    <input type="number" id="percent" value="16">
-    <button onclick="calculate()">ПОСЧИТАТЬ ДОХОД</button>
-    <div id="result">
-        <div>Через <span id="res-mo"></span> мес. у вас будет:</div>
-        <div class="res-val" id="total">0</div>
-    </div>
+    <input type="number" id="s" value="100000">
+    <input type="number" id="m" value="12">
+    <input type="number" id="p" value="16">
+    <button onclick="let res = s.value * Math.pow((1 + p.value/100/12), m.value); alert('Итого: ' + res.toFixed(0))">ПОСЧИТАТЬ</button>
+    
+    <!-- ВОТ ЭТА КНОПКА-МОСТИК -->
+    <a href="pass.html" class="link">👉 Перейти к Генератору паролей</a>
 </div>
-
-<script>
-function calculate() {
-    let s = parseFloat(document.getElementById('sum').value);
-    let m = parseInt(document.getElementById('months').value);
-    let p = parseFloat(document.getElementById('percent').value) / 100 / 12;
-    let total = s * Math.pow((1 + p), m);
-    document.getElementById('res-mo').innerText = m;
-    document.getElementById('total').innerText = total.toLocaleString('ru-RU', {maximumFractionDigits: 0}) + ' ₽';
-    document.getElementById('result').style.display = 'block';
-}
-</script>
-
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108766696', 'ym');
-    ym(108766696, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/108766696" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-
+<!-- Твой счетчик Метрики -->
+<script type="text/javascript"> (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document,'script','https://yandex.ru', 'ym'); ym(108766696, 'init', {ssr:true, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); </script>
 </body>
 </html>
