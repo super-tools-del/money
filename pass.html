@@ -1,0 +1,58 @@
+html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор безопасных паролей</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f4f8; padding: 20px; color: #333; text-align: center; }
+        .box { max-width: 400px; margin: auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 20px 0; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 18px; text-align: center; background: #f9f9f9; }
+        button { width: 100%; padding: 15px; background: #007bff; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        button.copy { background: #6c757d; }
+        .hint { font-size: 12px; color: #888; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>🔑 Создать пароль</h2>
+    <input type="text" id="passOut" readonly placeholder="Здесь будет пароль">
+    <button onclick="gen()">СГЕНЕРИРОВАТЬ</button>
+    <button class="copy" onclick="copy()">СКОПИРОВАТЬ</button>
+    <p class="hint">Стойкий пароль из 12 символов</p>
+</div>
+
+<script>
+function gen() {
+    let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+    let p = "";
+    for (let i = 0; i < 12; i++) {
+        p += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    document.getElementById('passOut').value = p;
+}
+function copy() {
+    let out = document.getElementById('passOut');
+    out.select();
+    document.execCommand("copy");
+    alert("Пароль скопирован!");
+}
+</script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://yandex.ru', 'ym');
+    ym(108766696, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>
